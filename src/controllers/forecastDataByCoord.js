@@ -1,8 +1,8 @@
-import fetchForecastByCoord from "../service/fetchForecastByCoord";
+import { fetchForecastByCoord } from "../service";
 
 const forecastDataByCoord = async (coord) => {
 	const data = await (await fetchForecastByCoord(coord)).data.daily;
 	return data;
 };
 
-export { forecastDataByCoord };
+export default forecastDataByCoord;

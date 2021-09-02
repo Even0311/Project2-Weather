@@ -9,4 +9,4 @@ const calculateNextNDaysFactory = (Ndays) => {
 	};
 };
 
-export { calculateNextNDaysFactory };
+export default calculateNextNDaysFactory;

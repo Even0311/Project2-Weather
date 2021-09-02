@@ -14,4 +14,4 @@ const weatherDataByCity = async (city) => {
 	};
 };
 
-export { weatherDataByCity };
+export default weatherDataByCity;

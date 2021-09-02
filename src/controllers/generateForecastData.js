@@ -15,4 +15,4 @@ const generateForecastData = (
 	return res;
 };
 
-export { generateForecastData };
+export default generateForecastData;

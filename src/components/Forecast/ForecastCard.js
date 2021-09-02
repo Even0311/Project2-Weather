@@ -5,7 +5,7 @@ const ForecastCard = (props) => {
 
 			<img
 				className="ForecastCard__Icon"
-				src="https://openweathermap.org/img/wn/10d@2x.png"
+				src={`https://openweathermap.org/img/wn/${props.dayData.icon}@2x.png`}
 				alt={props.dayData.icon}
 			></img>
 

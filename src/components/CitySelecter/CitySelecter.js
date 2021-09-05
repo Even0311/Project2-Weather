@@ -1,5 +1,6 @@
 import React from "react";
 import { Option } from "../Options/Option.js";
+import "./CitySelecter.scss";
 const CitySelecter = (props) => {
 	return (
 		<select
@@ -14,5 +15,4 @@ const CitySelecter = (props) => {
 		</select>
 	);
 };
-
 export { CitySelecter };

@@ -1,4 +1,5 @@
 import NewsCard from "./NewsCard";
+import "./News.scss";
 const News = (props) => {
 	return (
 		<div className="articleContainer">

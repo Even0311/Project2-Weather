@@ -1,8 +1,10 @@
+import "./NewsCard.scss";
+import { doge } from "../../background";
 const NewsCard = (props) => {
 	return (
 		<div className="newsCard">
 			<img
-				src={props.news.urlToImage}
+				src={props.news.urlToImage ? props.news.urlToImage : doge}
 				className="newsCard__Image"
 				alt="newsImage"
 			></img>
@@ -14,7 +16,7 @@ const NewsCard = (props) => {
 			>
 				<h2>{props.news.title}</h2>
 			</a>
-			<div className="newsCard__body">{props.news.description}</div>
+			{/* <div className="newsCard__body">{props.news.description}</div> */}
 		</div>
 	);
 };

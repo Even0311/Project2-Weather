@@ -1,0 +1,24 @@
+.todayWeatherContainer {
+	position: absolute;
+	width: 30%;
+	top: 20%;
+	left: 5%;
+	color: black;
+	&__temperature {
+		font-size: 3em;
+	}
+	&__weather {
+		padding-top: 0.5em;
+		font-size: 3em;
+	}
+	&__humidityAndWindBody {
+		display: flex;
+		padding-top: 0.5em;
+		justify-content: space-around;
+		&--item {
+			span {
+				font-size: 1.5em;
+			}
+		}
+	}
+}

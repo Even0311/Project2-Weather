@@ -14,6 +14,11 @@ import { week, FORECASTDAYS, NEWSNUMBERTODISPLAY } from "../constant";
 import { Forecast } from "./Forecast/Forecast.js";
 
 import { News } from "../components/News/News.js";
+
+import Banner from "./Banner/Banner.js";
+import { Sydney, Paris, NewYork, Beijing } from "../background";
+import TodayWeatherDataDisplayBoard from "../components/TodayWeatherDataDisplayBoard/TodayWeatherDataDisplayBoard.js";
+import Body from "./Body/Body.js";
 class Weather extends React.Component {
 	constructor(props) {
 		super(props);
@@ -30,6 +35,7 @@ class Weather extends React.Component {
 	}
 	handleCityChange = async (e) => {
 		const weatherData = await weatherDataByCity(e.target.value);
+
 		const foreCastData = await forecastDataByCoord(weatherData.coordinates);
 		const cauculateNextFiveDays = calculateNextNDaysFactory(FORECASTDAYS);
 		const days = cauculateNextFiveDays(new Date().getDay(), week);
@@ -38,8 +44,11 @@ class Weather extends React.Component {
 			foreCastData,
 			days
 		);
-		const data = await (await newsDataByCity(e.target.value)).data.articles;
-		console.log(data);
+		let data = await (await newsDataByCity(e.target.value)).data.articles;
+		if (data.length >= 24) {
+			data = data.slice(0, 24);
+		}
+
 		this.setState({
 			citySelected: e.target.value,
 			weather: weatherData.weatherData,
@@ -52,6 +61,7 @@ class Weather extends React.Component {
 	async componentDidMount() {
 		// fetch Weather data of default selected city
 		const weatherData = await weatherDataByCity(this.state.citySelected);
+		console.log(weatherData);
 		// fetch Forecast weather data of the city, queried by the coordinates of the city,
 		//the coordinates data are returned from the weatherDataByCity
 		const foreCastData = await forecastDataByCoord(weatherData.coordinates);
@@ -63,9 +73,13 @@ class Weather extends React.Component {
 			foreCastData,
 			days
 		);
-		const data = await (
+		let data = await (
 			await newsDataByCity(this.state.citySelected)
 		).data.articles;
+		if (data.length >= 24) {
+			data = data.slice(0, 24);
+		}
+
 		this.setState({
 			weather: weatherData.weatherData,
 			forecast: forecastDataArray,
@@ -80,27 +94,39 @@ class Weather extends React.Component {
 		this.setState({ newsIndex: newIndex });
 	};
 	render() {
+		const cityImageMap = {
+			Sydney: Sydney,
+			Paris: Paris,
+			"New York": NewYork,
+			Beijing: Beijing,
+		};
 		return (
 			<div>
 				{this.state.loading && <h2>Loading</h2>}
-				<CitySelecter
-					handleCityChange={this.handleCityChange}
-					arrayCity={this.state.arrayCity}
-				></CitySelecter>
-				{Object.keys(this.state.weather).map((key, index) => {
-					return <h4 key={index}>{this.state.weather[key]}</h4>;
-				})}
-				<Forecast forecast={this.state.forecast}></Forecast>
-				<News
-					articles={this.state.articles.slice(
-						this.state.newsIndex,
-						this.state.newsIndex + NEWSNUMBERTODISPLAY
-					)}
-					handleClick={(e) => {
-						this.handlePageChange(e);
-					}}
-					prevIsDisabled={this.state.newsIndex === 0}
-				></News>
+
+				<Banner imgUrl={cityImageMap[this.state.citySelected]}>
+					{" "}
+					<CitySelecter
+						handleCityChange={this.handleCityChange}
+						arrayCity={this.state.arrayCity}
+					></CitySelecter>
+					<TodayWeatherDataDisplayBoard
+						weatherData={this.state.weather}
+					></TodayWeatherDataDisplayBoard>
+				</Banner>
+				<Body>
+					<News
+						articles={this.state.articles.slice(
+							this.state.newsIndex,
+							this.state.newsIndex + NEWSNUMBERTODISPLAY
+						)}
+						handleClick={(e) => {
+							this.handlePageChange(e);
+						}}
+						prevIsDisabled={this.state.newsIndex === 0}
+					></News>
+					<Forecast forecast={this.state.forecast}></Forecast>
+				</Body>
 			</div>
 		);
 	}

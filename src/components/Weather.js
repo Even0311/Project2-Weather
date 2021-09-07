@@ -34,58 +34,66 @@ class Weather extends React.Component {
 		};
 	}
 	handleCityChange = async (e) => {
-		const weatherData = await weatherDataByCity(e.target.value);
+		try {
+			const weatherData = await weatherDataByCity(e.target.value);
 
-		const foreCastData = await forecastDataByCoord(weatherData.coordinates);
-		const cauculateNextFiveDays = calculateNextNDaysFactory(FORECASTDAYS);
-		const days = cauculateNextFiveDays(new Date().getDay(), week);
-		const forecastDataArray = generateForecastData(
-			FORECASTDAYS,
-			foreCastData,
-			days
-		);
-		let data = await (await newsDataByCity(e.target.value)).data.articles;
-		if (data.length >= 24) {
-			data = data.slice(0, 24);
+			const foreCastData = await forecastDataByCoord(weatherData.coordinates);
+			const cauculateNextFiveDays = calculateNextNDaysFactory(FORECASTDAYS);
+			const days = cauculateNextFiveDays(new Date().getDay(), week);
+			const forecastDataArray = generateForecastData(
+				FORECASTDAYS,
+				foreCastData,
+				days
+			);
+			let data = await (await newsDataByCity(e.target.value)).data.articles;
+			if (data.length >= 24) {
+				data = data.slice(0, 24);
+			}
+
+			this.setState({
+				citySelected: e.target.value,
+				weather: weatherData.weatherData,
+				forecast: forecastDataArray,
+				articles: data,
+				newsIndex: 0,
+			});
+		} catch (e) {
+			console.log(e);
 		}
-
-		this.setState({
-			citySelected: e.target.value,
-			weather: weatherData.weatherData,
-			forecast: forecastDataArray,
-			articles: data,
-			newsIndex: 0,
-		});
 	};
 
 	async componentDidMount() {
 		// fetch Weather data of default selected city
-		const weatherData = await weatherDataByCity(this.state.citySelected);
-		console.log(weatherData);
-		// fetch Forecast weather data of the city, queried by the coordinates of the city,
-		//the coordinates data are returned from the weatherDataByCity
-		const foreCastData = await forecastDataByCoord(weatherData.coordinates);
+		try {
+			const weatherData = await weatherDataByCity(this.state.citySelected);
+			console.log(weatherData);
+			// fetch Forecast weather data of the city, queried by the coordinates of the city,
+			//the coordinates data are returned from the weatherDataByCity
+			const foreCastData = await forecastDataByCoord(weatherData.coordinates);
 
-		const cauculateNextFiveDays = calculateNextNDaysFactory(FORECASTDAYS);
-		const days = cauculateNextFiveDays(new Date().getDay(), week);
-		const forecastDataArray = generateForecastData(
-			FORECASTDAYS,
-			foreCastData,
-			days
-		);
-		let data = await (
-			await newsDataByCity(this.state.citySelected)
-		).data.articles;
-		if (data.length >= 24) {
-			data = data.slice(0, 24);
+			const cauculateNextFiveDays = calculateNextNDaysFactory(FORECASTDAYS);
+			const days = cauculateNextFiveDays(new Date().getDay(), week);
+			const forecastDataArray = generateForecastData(
+				FORECASTDAYS,
+				foreCastData,
+				days
+			);
+
+			let data = await (
+				await newsDataByCity(this.state.citySelected)
+			).data.articles;
+			if (data.length >= 24) {
+				data = data.slice(0, 24);
+			}
+			this.setState({
+				weather: weatherData.weatherData,
+				forecast: forecastDataArray,
+				articles: data,
+				loading: false,
+			});
+		} catch (e) {
+			console.log(e);
 		}
-
-		this.setState({
-			weather: weatherData.weatherData,
-			forecast: forecastDataArray,
-			articles: data,
-			loading: false,
-		});
 	}
 	handlePageChange = (value) => {
 		const adjustment =

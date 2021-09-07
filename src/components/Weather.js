@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./Weather.scss";
 import {
 	weatherDataByCity,
 	forecastDataByCoord,
@@ -101,7 +101,7 @@ class Weather extends React.Component {
 			Beijing: Beijing,
 		};
 		return (
-			<div>
+			<div className="weatherBoardContainer">
 				{this.state.loading && <h2>Loading</h2>}
 
 				<Banner imgUrl={cityImageMap[this.state.citySelected]}>

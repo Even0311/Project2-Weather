@@ -9,7 +9,7 @@ const ForecastCard = (props) => {
 				alt={props.dayData.icon}
 			></img>
 
-			<div className="ForecastCard__Temp">{props.dayData.temp}</div>
+			<div className="ForecastCard__Temp">{props.dayData.temp}°C</div>
 			<div className="ForecastCard__Desc">{props.dayData.desc}</div>
 		</div>
 	);

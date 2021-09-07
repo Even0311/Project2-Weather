@@ -4,7 +4,7 @@ const Banner = styled.div`
 	position: relative;
 
 	left: 15%;
-	height: 50vh;
+	height: 60vh;
 
 	background-size: cover;
 	background-image: url(${(props) => props.imgUrl});
